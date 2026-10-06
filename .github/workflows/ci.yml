@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   prepare:
-    runs-on: ubuntu-24.04
+    runs-on: ubicloud-standard-2-ubuntu-2404
     # compute a single timestamp, version, and repo metadata for the entire workflow
     outputs:
       repo_owner: ${{ steps.meta.outputs.repo_owner }}
@@ -80,7 +80,7 @@ jobs:
             runner: ubuntu-24.04
           - platform: arm64
             runner: ubuntu-24.04-arm
-    runs-on: ${{ matrix.runner }}
+    runs-on: ${{ matrix.runner == 'ubuntu-24.04' && 'ubicloud-standard-2-ubuntu-2404' || matrix.runner == 'ubuntu-24.04-arm' && 'ubicloud-standard-2-arm-ubuntu-2404' || matrix.runner }}
     # no per-job outputs here; shared metadata comes from the `prepare` job
     steps:
       - uses: actions/checkout@v6
@@ -171,7 +171,7 @@ jobs:
   create-manifest:
     # wait for prepare and all matrix builds to finish
     needs: [prepare, docker]
-    runs-on: ubuntu-24.04
+    runs-on: ubicloud-standard-2-ubuntu-2404
     if: ${{ github.event_name != 'pull_request' }}
     steps:
       - name: Set up Docker Buildx
