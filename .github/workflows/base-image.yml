@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   prepare:
-    runs-on: ubuntu-24.04
+    runs-on: ubicloud-standard-2-ubuntu-2404
     outputs:
       repo_owner: ${{ steps.meta.outputs.repo_owner }}
       repo_name: ${{ steps.meta.outputs.repo_name }}
@@ -72,7 +72,7 @@ jobs:
             runner: ubuntu-24.04
           - platform: arm64
             runner: ubuntu-24.04-arm
-    runs-on: ${{ matrix.runner }}
+    runs-on: ${{ matrix.runner == 'ubuntu-24.04' && 'ubicloud-standard-2-ubuntu-2404' || matrix.runner == 'ubuntu-24.04-arm' && 'ubicloud-standard-2-arm-ubuntu-2404' || matrix.runner }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -145,7 +145,7 @@ jobs:
 
   create-manifest:
     needs: [prepare, docker]
-    runs-on: ubuntu-24.04
+    runs-on: ubicloud-standard-2-ubuntu-2404
     if: ${{ github.event_name != 'pull_request' }}
     steps:
       - name: Set up Docker Buildx

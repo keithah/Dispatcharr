@@ -45,7 +45,7 @@ concurrency:
 jobs:
   plan:
     name: Plan test groups
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     outputs:
       labels: ${{ steps.resolve.outputs.labels }}
       has_tests: ${{ steps.resolve.outputs.has_tests }}
@@ -130,7 +130,7 @@ jobs:
     name: ${{ matrix.label }}
     needs: plan
     if: needs.plan.outputs.has_tests == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     container:
       image: ${{ needs.plan.outputs.base_image }}
       credentials:
